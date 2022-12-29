@@ -2,20 +2,52 @@
 
 class App {
     protected $controller = 'Home';
-    protected $method = 'Index';
+    protected $method = 'index';
     protected $params = [];
-    
+
     public function __construct()
     {
         $url = $this->parseURL();
-
-        if ( file_exists(('../app/controllers/'. $url[0] . '.php')) ) { // cek apakah file dengan nama yg sesuai kita ketika di url setelah public/ itu ada. contoh = public/home/
+        if($url == NULL)                // cek $url[0] kalau Null, jadikan nilai default $url[0] = 'Home' 
+        {                               // dari komen video yt nya
+			$url = [$this->controller];
+		}
+        // CONTROLLER URL = Mengambil inputan controller pada url untuk disimpan di property variabel $controller diatas
+        if ( file_exists('../app/controllers/' . $url[0] . '.php') ) { // cek apakah file dengan nama yg sesuai kita ketika di url setelah public/ itu ada. contoh = public/home/
             $this->controller = $url[0];    // menimpa property $controller dengan value baru
             unset($url[0]); // hilangkan controller dari element array nya untuk mengambil parameternya
-            var_dump($url);
         }
+        require_once '../app/controllers/' . $this->controller . '.php';
+        $this->controller = new $this->controller;          // mengintansiasi class agar bisa memanggil method setelah home 'home/about'
+
+        // METHOD URL
+        if ( isset($url[1]) ) {
+            if (method_exists($this->controller, $url[1])){
+                $this->method = $url[1];
+                unset($url[1]);
+            }
+        }
+
+        
+        // PARAMS / PARAMETERS URL
+        if ( !empty($url) ) {
+            $this->params = array_values($url); 
+            // var_dump($url);
+        }
+
+        /* 
+        ADI INTINYA JIKA DI URL ADA 'home/index' atau 'about/page' 
+        setelah public/ maka 3 property dalam class App diatas akan di 
+        isi sesuai dengan isi url, yaitu property/method. lalu data 
+        akan di unset karena agar ketika kita masuk ke bagian PARAMS
+        data Property & Method dari link yg dimasukan tidak ikut terbawa.
+        */
+
+        //jalankan controller & method, serta kirimkan params jika ada
+        call_user_func_array([$this->controller, $this->method], $this->params);
     }
 
+    // pemecahan url dan atur suapaya '/' tidak dibawa
     public function parseURL()                               // mengambil data dari url / parsing
     {
         if( isset($_GET['url']) ) { 

@@ -17,3 +17,18 @@ RewriteRule ^(.*)$ index.php?url=$1 [L]
     [L] = flag/aturan   // jika ada rule yg terpenuhi jangan jalankan rule lain setelah ini
 
 jadi inti nya ambil riwayat path kita di url    
+
+
+
+
+app
+        // controller
+        if ( file_exists('../app/controllers/' . $url[0] . '.php') ) { // cek apakah file dengan nama yg sesuai kita ketika di url setelah public/ itu ada. contoh = public/home/
+            $this->controller = $url[0];    // menimpa property $controller dengan value baru
+            unset($url[0]); // hilangkan controller dari element array nya untuk mengambil parameternya
+        }
+        require_once '../app/controllers/' . $whis->controller . '.php';
+        $this->controller = new $this->controller;
+
+        //method
+        // if ( isset($url[1]) )
