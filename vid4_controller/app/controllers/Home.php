@@ -1,8 +1,12 @@
 <?php
 
+// CONTROLLER
 class Home {
-    public function index()
+    // METHOD
+    public function index() //jika url = home/about/   (default)
+    {
     {
         echo 'home/index';
     }
+}
 }

@@ -1,6 +1,8 @@
 <?php
 
+// CONTROLLER
 class About {
+    //METHOD
     public function index($nama = 'Raie', $pekerjaan = 'Mahasiswa') //jika url = public/about/   (default)
     {
         echo 'about/index <br><br>';
