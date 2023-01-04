@@ -34,6 +34,11 @@ app
         // if ( isset($url[1]) )
 
 
+VID7_MODEL new
+- new controllers : Mahasiswa.php
+- new 2 files in models 
+- new views : mahasiswa = tempat tampilan dari databse (fetch)
+
 ALUR SEJAUH ini
 1. public/index.php => init.php => all file in core folder
 1. url check : App.php & .htaccess => Home.php/About.php => all file in views & model folder
